@@ -74,7 +74,6 @@ RUN apt-get update && \
     aria2 \
     autoconf \
     automake \
-    binaryen \
     binutils-aarch64-linux-gnu \
     binutils-x86-64-linux-gnu \
     build-essential \
@@ -82,7 +81,6 @@ RUN apt-get update && \
     curl \
     dirmngr \
     dpkg-dev \
-    emscripten \
     file \
     git \
     git-lfs \
