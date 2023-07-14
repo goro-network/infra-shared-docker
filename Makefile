@@ -1,37 +1,31 @@
 MAKEFLAGS			+=	--jobs 1 --silent
 SHELL				:=	/bin/bash
 CPU_ARCH			:=	$(shell if [[ "$(shell uname -p)" = "x86_64" ]]; then echo amd64; else echo arm64; fi)
+TARGETS				:=	rust-llvm15 node18-ubuntu2204 android28-ubuntu2204
+BUILDER_TARGETS			:=	$(addprefix builder-,$(TARGETS))
+BUILDER_IMAGE_PREFIX		:=	ghcr.io/goro-network/goro-builder-
+PUSH_BUILDER_TARGETS		:=	$(addprefix push-builder-,$(TARGETS))
 
-.PHONY: all builder-rust-llvm15
-.ONESHELL: all builder-rust-llvm15
+.PHONY: all builder push-builder $(BUILDER_TARGETS) $(PUSH_BUILDER_TARGETS)
+.ONESHELL: all builder push-builder $(BUILDER_TARGETS) $(PUSH_BUILDER_TARGETS)
 
-all: | builder-android28-ubuntu2204
+all: | push-builder
 
-builder-rust-llvm15:
-	CURRENT_RECIPE="$(strip $(subst builder-,,$@))"
-	echo -e "\033[92m\nBuilding Docker Image - \033[35m$${CURRENT_RECIPE}\n\033[0m"
-	docker build \
-		-t ghcr.io/goro-network/goro-builder-rust-llvm15:${CPU_ARCH} \
-		-f builder/rust-llvm15.Dockerfile \
-		.
+builder: | $(BUILDER_TARGETS)
 
-builder-node18-ubuntu2204: | builder-rust-llvm15
+push-builder: | $(PUSH_BUILDER_TARGETS)
+
+$(BUILDER_TARGETS):
 	CURRENT_RECIPE="$(strip $(subst builder-,,$@))"
 	echo -e "\033[92m\nBuilding Docker Image - \033[35m$${CURRENT_RECIPE}\n\033[0m"
 	docker build \
 		--build-arg CPU_ARCH=${CPU_ARCH} \
-		-t ghcr.io/goro-network/goro-builder-node18-ubuntu2204:${CPU_ARCH} \
-		-f builder/node18-ubuntu2204.Dockerfile \
+		-t ${BUILDER_IMAGE_PREFIX}$${CURRENT_RECIPE}:${CPU_ARCH} \
+		-f builder/$${CURRENT_RECIPE}.Dockerfile \
 		.
 
-builder-android28-ubuntu2204: | builder-node18-ubuntu2204
-	if [ ${CPU_ARCH} != amd64 ]; then\
-		echo -e "\033[31m\nSupported Android Build System CPU is \"x86_64\"\n\033[0m" &&\
-		exit 66; \
-	fi
-	CURRENT_RECIPE="$(strip $(subst builder-,,$@))"
-	echo -e "\033[92m\nBuilding Docker Image - \033[35m$${CURRENT_RECIPE}\n\033[0m"
-	docker build \
-		-t ghcr.io/goro-network/goro-builder-android28-ubuntu2204:amd64 \
-		-f builder/android28-ubuntu2204.Dockerfile \
-		.
+$(PUSH_BUILDER_TARGETS):
+	CURRENT_RECIPE="$(strip $(subst push-builder-,,$@))"
+	BUILDER_RECIPE="$(addprefix builder-,$${CURRENT_RECIPE})"
+	$(MAKE) $${BUILDER_RECIPE}
+	docker push ${BUILDER_IMAGE_PREFIX}$${CURRENT_RECIPE}:${CPU_ARCH}
