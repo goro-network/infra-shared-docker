@@ -1,0 +1,37 @@
+name: On Release - Build Push
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build-push-amd64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Build & Push Docker Images (AMD64)
+        run: |
+
+          # Login for images push
+          echo ${{ secrets.DANGER_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Build & push
+          make
+  build-push-arm64:
+    runs-on: [self-hosted, neoverse-n1]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Build & Push Docker Images (ARM64)
+        run: |
+
+          # Login for images push
+          echo ${{ secrets.DANGER_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Build & push
+          make push-builder-rust-llvm15
+          make push-builder-node18-ubuntu2204
