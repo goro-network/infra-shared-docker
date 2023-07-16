@@ -12,7 +12,7 @@ TBD
 
 ## [Builder Images](./builder/README.md)
 
-### [Rust LLVM15]((./rust-llvm15.Dockerfile))
+### [Rust LLVM15](./builder/rust-llvm15.Dockerfile)
 
 - Base Image    : `ubuntu:22.04`
 - Image Name    : `ghcr.io/goro-network/goro-builder-rust-llvm15:[amd64 or arm64]`
