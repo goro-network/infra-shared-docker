@@ -1,7 +1,7 @@
 MAKEFLAGS			+=	--jobs 1 --silent --environment-overrides
 SHELL				:=	/bin/bash
 CPU_ARCH			:=	$(shell if [[ "$(shell uname -p)" = "x86_64" ]]; then echo amd64; else echo arm64; fi)
-TARGETS				:=	rust-llvm15 node18-ubuntu2204 android28-ubuntu2204
+TARGETS				:=	rust-llvm15 node18-ubuntu2204 android28-ubuntu2204 smart-contract
 BUILDER_TARGETS			:=	$(addprefix builder-,$(TARGETS))
 BUILDER_IMAGE_PREFIX		:=	ghcr.io/goro-network/goro-builder-
 PUSH_BUILDER_TARGETS		:=	$(addprefix push-builder-,$(TARGETS))

@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-push-amd64:
-    runs-on: ubuntu-22.04
+    runs-on: [epoch-amd64]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -35,3 +35,4 @@ jobs:
           # Build & push
           make push-builder-rust-llvm15
           make push-builder-node18-ubuntu2204
+          make push-builder-smart-contract

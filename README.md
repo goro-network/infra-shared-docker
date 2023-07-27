@@ -14,23 +14,33 @@ TBD
 
 ### [Rust LLVM15](./builder/rust-llvm15.Dockerfile)
 
-- Base Image    : `ubuntu:22.04`
-- Image Name    : `ghcr.io/goro-network/goro-builder-rust-llvm15:[amd64 or arm64]`
-- Nightly       : `nightly-2023-03-25`
-- Stable        : `1.69.0`
-- LLVM          : `15.0.7`
+- Base Image        : `ubuntu:22.04`
+- Image Name        : `ghcr.io/goro-network/goro-builder-rust-llvm15:[amd64 or arm64]`
+- Nightly           : `nightly-2023-03-25`
+- Stable            : `1.69.0`
+- LLVM              : `15.0.7`
 
 ### [Node18 Ubuntu 22.04](./builder/node18-ubuntu2204.Dockerfile)
 
-- Base Image    : `ghcr.io/goro-network/goro-builder-rust-llvm15:[amd64 or arm64]`
-- Image Name    : `ghcr.io/goro-network/goro-builder-node18-ubuntu22.04:[amd64 or arm64]`
-- NodeJS        : `LTS 18.16.1`
-- Yarn          : `Classic 1.22.19`
+- Base Image        : `ghcr.io/goro-network/goro-builder-rust-llvm15:[amd64 or arm64]`
+- Image Name        : `ghcr.io/goro-network/goro-builder-node18-ubuntu2204:[amd64 or arm64]`
+- NodeJS            : `LTS 18.16.1`
+- Yarn              : `Classic 1.22.19`
 
 ### [Android28 Ubuntu 22.04](./builder/android28-ubuntu2204.Dockerfile)
 
-- Base Image    : `ghcr.io/goro-network/goro-builder-node18-ubuntu22.04:amd64`
-- Image Name    : `ghcr.io/goro-network/goro-builder-android28-ubuntu22.04:amd64`
-- Android SDK   : `28 - 33`
-- NDK           : `25.2.9519653 (25c)`
-- Gradle        : `8.2.1`
+- Base Image        : `ghcr.io/goro-network/goro-builder-node18-ubuntu2204:amd64`
+- Image Name        : `ghcr.io/goro-network/goro-builder-android28-ubuntu2204:amd64`
+- Android SDK       : `28 - 33`
+- NDK               : `25.2.9519653 (25c)`
+- Gradle            : `8.2.1`
+
+### [Smart Contract](./builder/smart-contract.Dockerfile)
+
+- Base Image        : `ghcr.io/goro-network/goro-builder-node18-ubuntu2204:[amd64 or arm64]`
+- Image Name        : `ghcr.io/goro-network/goro-builder-smart-contract:[amd64 or arm64]`
+- `cargo-contract`  : `3.0.1`
+- `cargo-dylint`    : `2.1.7`
+- `dylint-link`     : `2.1.7`
+- `subxt-cli`       : `0.29.0`
+- `wasm-pack`       : `0.12.1`
